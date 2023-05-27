@@ -11,7 +11,7 @@ import (
 func TestLogger(t *testing.T) {
 	t.Parallel()
 
-	task := progress.NewBasicTask()
+	task := progress.NewLongRunningJob()
 	task.AddWork(50)
 	go progress.Logger(t.Logf, "building thing: ", task)
 	for task.InProgress() {

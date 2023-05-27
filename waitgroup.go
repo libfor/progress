@@ -12,7 +12,7 @@ type WaitGroup struct {
 func (wg *WaitGroup) init() {
 	if wg.wg == nil {
 		wg.wg = &sync.WaitGroup{}
-		wg.basicTask = NewBasicTask()
+		wg.basicTask = NewLongRunningJob()
 	}
 }
 

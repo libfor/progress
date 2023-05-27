@@ -17,9 +17,9 @@ type basicTask struct {
 	sugar
 }
 
-// NewBasicTask returns a basic task tracker.
+// NewLongRunningJob returns a basic task tracker.
 // All methods are safe to call concurrently.
-func NewBasicTask() basicTask {
+func NewLongRunningJob() basicTask {
 	t := basicTask{
 		l:        new(sync.RWMutex),
 		total:    new(uint64),

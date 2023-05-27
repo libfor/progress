@@ -10,7 +10,7 @@ import (
 func TestBasicTask(t *testing.T) {
 	t.Parallel()
 
-	track := progress.NewBasicTask()
+	track := progress.NewLongRunningJob()
 	ch, fin := track.DoneChan()
 	if fin {
 		t.Fatalf("expected fresh task to be in progress")
@@ -44,7 +44,7 @@ func TestEdgeCases(t *testing.T) {
 	t.Parallel()
 
 	{
-		track := progress.NewBasicTask()
+		track := progress.NewLongRunningJob()
 		track.AddWork(15)
 		track.FinishWork(15)
 		if track.InProgress() {
@@ -53,7 +53,7 @@ func TestEdgeCases(t *testing.T) {
 	}
 
 	{
-		track := progress.NewBasicTask()
+		track := progress.NewLongRunningJob()
 		track.AddWork(100)
 		track.AddWork(math.MaxUint64)
 		if fin, tot := track.Count(); fin != 0 || tot != math.MaxUint64 {
