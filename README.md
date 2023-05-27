@@ -6,10 +6,11 @@
 
 The `progress.Reader` interface aims to be just that.
 
-    progress.Reader interface
-	    DoneChan() (chan struct{}, bool)
-	    Count() (finished uint64, total uint64)
-
+```go
+progress.Reader interface
+    DoneChan() (done chan struct{}, completed bool)
+    Count() (finished uint64, total uint64)
+```
 
 To drive adoption and provide practical utility, we've also included some handy tools right out of the box! 📦
 
@@ -17,19 +18,23 @@ To drive adoption and provide practical utility, we've also included some handy 
 
 This simple wrapper adds helpful functions to a Reader:
 
-    PerSecond() float64
-    Remaining() time.Duration
-    Percentage() float64
-    InProgress() bool
+```go
+PerSecond() float64
+Remaining() time.Duration
+Percentage() float64
+InProgress() bool
+```
 
 ### `progress.Logger(Reader)`
 
 Instantly start a goroutine that keeps an eye on a Reader and logs informative updates! 👀 Here's what it looks like:
 
-    searching:  49% (20.69/s, 1.256483582s remaining)
-    searching:  56% (18.01/s, 1.221804358s remaining)
-    searching:  80% (20.37/s, 490.981158ms remaining)
-    searching: 100% (21.98/s, 0s remaining)
+```yaml
+searching:  49% (20.69/s, 1.256483582s remaining)
+searching:  56% (18.01/s, 1.221804358s remaining)
+searching:  80% (20.37/s, 490.981158ms remaining)
+searching: 100% (21.98/s, 0s remaining)
+```
 
 ### `progress.NewLongRunningJob`
 
