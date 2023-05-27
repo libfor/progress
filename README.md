@@ -1,4 +1,4 @@
-# `progress.Reader`
+# The `progress.Reader` interface
 
 
 **Progress** is something that deserves a standard, simple interface. Almost every program and library has long-running tasks. This library exposes the `progress.Reader` interface, which is minimal but flexible enough to build all kinds of progress bars or monitors.
@@ -37,11 +37,11 @@ Drop in replacement for sync.WaitGroup that satisfies the Reader interface.
 
 Easy to use concurrency-safe type for instrumenting your long-running functions with a Reader implementation. It's painless to support `progress` and might make the consumers of your function very happy.
 
-### `todo:`
+## Todo List
 
 Here's some simple ideas for those looking to contribute.
 
 - [x] Satisfy `progress.Reader` with just a count.
 - [ ] Return a `progress.Reader` from a slice or channel.
-- [ ] Create a pretty terminal prgoress bar.
+- [ ] Create a pretty terminal progress bar.
 - [ ] Experiment with passing return types through.
