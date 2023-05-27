@@ -5,6 +5,47 @@ import (
 	"time"
 )
 
+// WaitGroup is a dropin replacement for sync.WaitGroup
+// that provides progress tracking.
+type WaitGroup struct {
+	wg *sync.WaitGroup
+	basicTask
+}
+
+func (wg *WaitGroup) init() {
+	if wg.wg == nil {
+		wg.wg = &sync.WaitGroup{}
+		wg.basicTask = NewLongRunningJob()
+	}
+}
+
+func (wg *WaitGroup) Add(delta int) {
+	wg.init()
+	if delta > 0 {
+		wg.AddWork(uint64(delta))
+	} else {
+		wg.FinishWork(uint64(-delta))
+	}
+	wg.wg.Add(delta)
+}
+func (wg *WaitGroup) Done() {
+	wg.Add(-1)
+}
+func (wg *WaitGroup) Wait() {
+	wg.init()
+	wg.wg.Wait()
+}
+
+func Logger(to func(format string, v ...any), prefix string, r Reader) {
+	sugar := Extend(r)
+	to("%s  0%%", prefix)
+	for sugar.InProgress() {
+		to(`%s%3d%% (%.2f/s, %s remaining)`, prefix, int(100*sugar.Percentage()), sugar.PerSecond(), sugar.Remaining())
+	}
+	to("%s100%% (%.2f/s, %s remaining)", prefix, sugar.PerSecond(), sugar.Remaining())
+}
+
+// countPoller uses polling to create a Reader.
 type countPoller struct {
 	l        *sync.RWMutex
 	c        chan struct{}

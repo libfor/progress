@@ -19,6 +19,7 @@ type basicTask struct {
 
 // NewLongRunningJob returns a basic task tracker.
 // All methods are safe to call concurrently.
+// It already uses Extend to provide utility methods.
 func NewLongRunningJob() basicTask {
 	t := basicTask{
 		l:        new(sync.RWMutex),
