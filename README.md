@@ -1,5 +1,6 @@
 # `progress.Reader`
 
+
 **Progress** is something that deserves a standard, simple interface. Almost every program and library has long-running tasks. This library exposes the `progress.Reader` interface, which is minimal but flexible enough to build all kinds of progress bars or monitors.
 
     progress.Reader interface
@@ -7,6 +8,8 @@
 	    Count() (uint64, uint64)
 
 To encourage adoption, this package also bootstraps a few helpful utilities.
+
+[![Run unit tests](https://github.com/libfor/progress/actions/workflows/test_on_push.yaml/badge.svg)](https://github.com/libfor/progress/actions/workflows/test_on_push.yaml) 
 
 ### `progress.Extend(Reader)`
 
