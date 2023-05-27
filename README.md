@@ -2,7 +2,9 @@
 
 [![Go Reference](https://pkg.go.dev/badge/github.com/libfor/progress.svg)](https://pkg.go.dev/github.com/libfor/progress) [![Run unit tests](https://github.com/libfor/progress/actions/workflows/test_on_push.yaml/badge.svg)](https://github.com/libfor/progress/actions/workflows/test_on_push.yaml) 
 
-**Progress monitoring** is a crucial part of many applications, and deserves a simple, standardized interface. The `progress.Reader` interface aims to do just that.
+**Progress monitoring** is a crucial part of many applications, and deserves a simple, standardized interface. 
+
+The `progress.Reader` interface aims to be just that.
 
     progress.Reader interface
 	    DoneChan() (chan struct{}, bool)
@@ -31,12 +33,11 @@ Instantly start a goroutine that keeps an eye on a Reader and logs informative u
 
 ### `progress.NewLongRunningJob`
 
-This concurrency-safe utility makes instrumenting your long-running functions with a Reader implementation absolutely painless. Support progress and make your function consumers extremely happy! 😃
+This concurrency-safe utility makes instrumenting your long-running functions with a Reader implementation absolutely painless. Support progress and make your library consumers extremely happy! 😃
 
 ### `progress.WaitGroup`
 
 Drop in replacement for sync.WaitGroup that satisfies the Reader interface.
-
 
 ## 📝 Todo List
 
