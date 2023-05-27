@@ -1,18 +1,19 @@
-# ⏱️ The `progress.Reader` interface
+## ⏱️ `type progress.Reader interface`
 
-**Track your progress with elegance!** 🎯 Progress monitoring is a crucial part of many applications, and deserves a simple, standardized interface. Our progress.Reader interface makes tracking long-running tasks a breeze. Whether you're building a progress bar, or just need to monitor task progression, we've got you covered.
+[![Go Reference](https://pkg.go.dev/badge/github.com/libfor/progress.svg)](https://pkg.go.dev/github.com/libfor/progress) [![Run unit tests](https://github.com/libfor/progress/actions/workflows/test_on_push.yaml/badge.svg)](https://github.com/libfor/progress/actions/workflows/test_on_push.yaml) 
+
+**Progress monitoring** is a crucial part of many applications, and deserves a simple, standardized interface. The `progress.Reader` interface aims to do just that.
 
     progress.Reader interface
 	    DoneChan() (chan struct{}, bool)
-	    Count() (uint64, uint64)
+	    Count() (finished uint64, total uint64)
+
 
 To drive adoption and provide practical utility, we've also included some handy tools right out of the box! 📦
 
-[![Run unit tests](https://github.com/libfor/progress/actions/workflows/test_on_push.yaml/badge.svg)](https://github.com/libfor/progress/actions/workflows/test_on_push.yaml) 
-
 ### `progress.Extend(Reader)`
 
-This simple wrapper builds fantastic functionality atop a Reader, including:
+This simple wrapper adds helpful functions to a Reader:
 
     PerSecond() float64
     Remaining() time.Duration
