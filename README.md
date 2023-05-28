@@ -4,7 +4,7 @@
 
 ---
 
-[![Go Reference](https://pkg.go.dev/badge/github.com/libfor/progress.svg)](https://pkg.go.dev/github.com/libfor/progress) [![Run unit tests](https://github.com/libfor/progress/actions/workflows/test_on_push.yaml/badge.svg)](https://github.com/libfor/progress/actions/workflows/test_on_push.yaml) 
+[![Go Reference](https://pkg.go.dev/badge/github.com/libfor/progress.svg)](https://pkg.go.dev/github.com/libfor/progress) [![Run unit tests](https://github.com/libfor/progress/actions/workflows/test_on_push.yaml/badge.svg)](https://github.com/libfor/progress/actions/workflows/test_on_push.yaml) [![Go Report Card](https://goreportcard.com/badge/github.com/libfor/progress)](https://goreportcard.com/report/github.com/libfor/progress)
 
 
 **Progress monitoring** is a crucial part of many applications, and deserves a simple, standardized interface. 
