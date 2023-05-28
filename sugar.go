@@ -5,28 +5,28 @@ import (
 	"time"
 )
 
-type sugar struct {
+type ReaderWrapper struct {
 	Reader
 
 	lock      *sync.RWMutex
 	startTime *time.Time
 }
 
-// Extend adds some nice utility methods to a tracker.
-// Trackers can just embed this.
-func Extend(t Reader) sugar {
-	if already, wrapped := t.(sugar); wrapped {
+// Extend adds some nice utility methods to a Reader.
+// Reader implementations can just embed this.
+func Extend(t Reader) ReaderWrapper {
+	if already, wrapped := t.(ReaderWrapper); wrapped {
 		return already
 	}
 	now := time.Now()
-	return sugar{Reader: t,
+	return ReaderWrapper{Reader: t,
 		lock:      new(sync.RWMutex),
 		startTime: &now,
 	}
 }
 
 // PerSecond returns the throughput since this tracker began.
-func (s sugar) PerSecond() float64 {
+func (s ReaderWrapper) PerSecond() float64 {
 	s.lock.Lock()
 	defer s.lock.Unlock()
 
@@ -35,7 +35,7 @@ func (s sugar) PerSecond() float64 {
 }
 
 // Remaining estimates the time remaining until completion.
-func (s sugar) Remaining() time.Duration {
+func (s ReaderWrapper) Remaining() time.Duration {
 	perSecond := s.PerSecond()
 	fin, tot := s.Count()
 	if perSecond == 0 {
@@ -49,7 +49,7 @@ func (s sugar) Remaining() time.Duration {
 }
 
 // Percentage returns the current progress as a percentage between 0 and 1.
-func (s sugar) Percentage() float64 {
+func (s ReaderWrapper) Percentage() float64 {
 	fin, tot := s.Count()
 	return float64(fin) / float64(tot)
 }
@@ -57,7 +57,7 @@ func (s sugar) Percentage() float64 {
 // InProgress will return false when the tracker is complete.
 // It is debounced to try and return false for 200ms.
 // After 200ms it will finally return true.
-func (s sugar) InProgress() bool {
+func (s ReaderWrapper) InProgress() bool {
 	ch, closed := s.DoneChan()
 	if closed {
 		return false

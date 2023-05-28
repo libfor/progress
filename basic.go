@@ -5,7 +5,7 @@ import (
 	"sync"
 )
 
-type basicTask struct {
+type LongRunningJob struct {
 	l *sync.RWMutex
 
 	total    *uint64
@@ -14,27 +14,27 @@ type basicTask struct {
 	done   chan struct{}
 	frozen *bool
 
-	sugar
+	ReaderWrapper
 }
 
 // NewLongRunningJob returns a basic task tracker.
 // All methods are safe to call concurrently.
 // It already uses Extend to provide utility methods.
-func NewLongRunningJob() basicTask {
-	t := basicTask{
+func NewLongRunningJob() LongRunningJob {
+	t := LongRunningJob{
 		l:        new(sync.RWMutex),
 		total:    new(uint64),
 		finished: new(uint64),
 		frozen:   new(bool),
 		done:     make(chan struct{}),
 	}
-	t.sugar = Extend(t)
+	t.ReaderWrapper = Extend(t)
 	return t
 }
 
 // Count returns the finished work and total work.
 // Note that the task itself counts as 1 piece of work.
-func (t basicTask) Count() (uint64, uint64) {
+func (t LongRunningJob) Count() (uint64, uint64) {
 	t.l.RLock()
 	defer t.l.RUnlock()
 
@@ -52,7 +52,7 @@ func (t basicTask) Count() (uint64, uint64) {
 	return finished, total + 1
 }
 
-func (t basicTask) Complete() {
+func (t LongRunningJob) Complete() {
 	t.l.Lock()
 	defer t.l.Unlock()
 	if *t.frozen {
@@ -62,7 +62,7 @@ func (t basicTask) Complete() {
 	close(t.done)
 }
 
-func (t basicTask) DoneChan() (chan struct{}, bool) {
+func (t LongRunningJob) DoneChan() (chan struct{}, bool) {
 	t.l.RLock()
 	defer t.l.RUnlock()
 	return t.done, *t.frozen
@@ -70,7 +70,8 @@ func (t basicTask) DoneChan() (chan struct{}, bool) {
 
 const maxTasks = math.MaxUint64 - 1
 
-func (t basicTask) AddWork(items uint64) {
+// AddWork adds to the total work.
+func (t LongRunningJob) AddWork(items uint64) {
 	if items == 0 {
 		return
 	}
@@ -86,7 +87,9 @@ func (t basicTask) AddWork(items uint64) {
 	*t.total = *t.total + items
 }
 
-func (t basicTask) FinishWork(items uint64) {
+// FinishWork progresses the job. When the amount of finished work
+// equals or exceed the total work, the job is marked as completed.
+func (t LongRunningJob) FinishWork(items uint64) {
 	if items == 0 {
 		return
 	}

@@ -9,13 +9,13 @@ import (
 // that provides progress tracking.
 type WaitGroup struct {
 	wg *sync.WaitGroup
-	basicTask
+	LongRunningJob
 }
 
 func (wg *WaitGroup) init() {
 	if wg.wg == nil {
 		wg.wg = &sync.WaitGroup{}
-		wg.basicTask = NewLongRunningJob()
+		wg.LongRunningJob = NewLongRunningJob()
 	}
 }
 
